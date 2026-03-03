@@ -4,6 +4,11 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 const app = express();
+const path = require('path');
+
+// serve static files (html, images, etc) from project root
+app.use(express.static(path.join(__dirname, '..')));
+
 app.use(cors());
 app.use(express.json());
 
