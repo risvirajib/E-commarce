@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Risvi World — Full Website (Single File)</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#222327;
+      --card:#121832;
+      --muted:#8ea0b8;
+      --text:#e7edf7;
+      --brand:#5b8cff;
+      --accent:#00d2a8;
+      --danger:#ff6b6b;
+      --border:rgba(255,255,255,.08);
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:linear-gradient(180deg,#0b1020 0%,#0f1733 100%);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
+      color:var(--text);
+      line-height:1.5;
+    }
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%; display:block}
+    .container{max-width:1200px; margin:0 auto; padding:0 20px}
+
+    /* Header */
+    header{
+      position:sticky; top:0; z-index:50; backdrop-filter:blur(8px);
+      background:rgba(11,16,32,.6); border-bottom:1px solid var(--border);
+    }
+    .nav{
+      display:flex; gap:12px; align-items:center; justify-content:space-between;
+      padding:14px 0; flex-wrap:wrap;
+    }
+    .logo{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px}
+    .logo-badge{
+      width:34px; height:34px; border-radius:10px;
+      background:linear-gradient(135deg,var(--brand),#7aa4ff);
+      display:grid; place-items:center; box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .logo-badge img{width:34px;height:34px;object-fit:cover}
+    .right-actions{display:flex; gap:10px; align-items:center}
+    .pill{display:inline-flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--border); padding:10px 14px; border-radius:999px}
+    .pill.danger{border-color:rgba(255,107,107,.4); color:#ffd6d6}
+    .pill.brand{background:linear-gradient(135deg,var(--brand),#7aa4ff); border-color:transparent; color:#08122c; font-weight:700}
+
+    /* Pages wrapper */
+    main{padding:22px 0 40px}
+    .page{display:none}
+    .page.active{display:block}
+
+    /* Home */
+    .search{flex:1; display:flex; align-items:center; gap:10px; max-width:560px; margin:0 8px}
+    .search input{
+      width:100%; background:var(--card); border:1px solid var(--border); color:var(--text);
+      padding:12px 14px; border-radius:12px; outline:none;
+    }
+
+    .hero{padding:12px 0 10px}
+    .hero-banner{
+      background:linear-gradient(135deg,rgba(91,140,255,.18),rgba(0,210,168,.12));
+      border:1px solid var(--border); border-radius:var(--radius); padding:22px;
+      display:flex; gap:24px; align-items:center; box-shadow:var(--shadow)
+    }
+    .hero h1{margin:0 0 6px; font-size:28px}
+    .hero h3{margin:0 0 8px; font-size:18px; font-weight:600; color:#d7e6ff}
+    .hero p{margin:0; color:var(--muted)}
+
+    .filters{display:flex; gap:10px; flex-wrap:wrap; margin:18px 0}
+    .filters button{
+      padding:8px 12px; border:1px solid var(--border); background:var(--card);
+      border-radius:999px; font-size:14px; color:#cfe1ff; cursor:pointer;
+    }
+    .filters button.active{background:linear-gradient(135deg,var(--brand),#7aa4ff); color:#0b1020; border-color:transparent}
+
+    .grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
+    @media(max-width:990px){.grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:720px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:480px){.grid{grid-template-columns:1fr}}
+
+    .card{
+      background:var(--card); border:1px solid var(--border); border-radius:18px;
+      overflow:hidden; box-shadow:var(--shadow);
+      display:flex; flex-direction:column;
+    }
+    .card .thumb{position:relative; aspect-ratio:1.2/1; overflow:hidden; background:#0e1530}
+    .card .thumb img{width:100%; height:100%; object-fit:cover; transition:transform .4s ease}
+    .card:hover .thumb img{transform:scale(1.06)}
+    .chip{
+      position:absolute; left:10px; top:10px; background:rgba(0,210,168,.9);
+      color:#001a14; font-weight:700; padding:6px 10px; border-radius:999px; font-size:12px
+    }
+    .content{padding:14px; display:flex; flex-direction:column; gap:10px ; }
+    .title{font-weight:700; font-size:16px}
+    .price{display:flex; align-items:center; justify-content:space-between}
+    .price .now{font-weight:800}
+    .price .old{color:var(--muted); text-decoration:line-through; font-size:14px}
+    .actions{display:flex; gap:10px; margin-top:auto}
+    .btn{
+      flex:1; display:inline-flex; align-items:center; justify-content:center;
+      gap:8px; padding:10px 12px;
+      border-radius:12px; border:1px solid var(--border);
+      background:transparent; color:var(--text);
+      cursor:pointer; font-weight:600;
+    }
+    .btn.primary{background:linear-gradient(135deg,var(--brand),#7aa4ff); color:#08122c; border-color:transparent}
+    .btn.outline:hover{background:rgba(255,255,255,.05)}
+
+    #orderModal{
+      position:fixed; inset:0; display:none; place-items:center;
+      background:rgba(2,6,23,.6); backdrop-filter:blur(6px); padding:20px;
+      z-index:999;
+    }
+    #orderModal.open{display:grid}
+    .modal{
+      width:min(560px,95vw); background:var(--card); border:1px solid var(--border);
+      border-radius:20px; box-shadow:var(--shadow); overflow:hidden;
+    }
+    .modal-top{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:12px 18px; border-bottom:1px solid var(--border)
+    }
+    .modal-body{padding:18px}
+    .modal h3{margin:0 0 8px}
+    .row{display:grid; gap:10px; grid-template-columns:1fr 1fr}
+    .row > label{display:flex; flex-direction:column; gap:6px}
+    .modal input,.modal select,.modal textarea{
+      background:#0e1530; border:1px solid var(--border); border-radius:10px;
+      padding:10px 12px; color:var(--text); outline:none;
+    }
+    .modal .full{grid-column:1/-1}
+    .modal .footer{display:flex; justify-content:flex-end; gap:10px; margin-top:14px}
+
+    .auth-wrap{
+      min-height:calc(100vh - 90px);
+      display:flex; align-items:center; justify-content:center;
+      padding:20px;
+      background:
+        radial-gradient(1200px 700px at 20% 10%, rgba(224, 228, 236, 0.25), transparent 60%),
+        radial-gradient(900px 600px at 90% 20%, rgba(208, 218, 216, 0.18), transparent 55%),
+        linear-gradient(180deg,#0b1020 0%,#0f1733 100%);
+    }
+    .auth-card{
+      width:min(420px, 95vw);
+      background:rgba(18,24,50,.75);
+      border:1px solid var(--border);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      padding:26px;
+      backdrop-filter:blur(10px);
+    }
+    .auth-card h2{margin:0 0 6px; font-family:Poppins,Inter,sans-serif}
+    .auth-card p{margin:0 0 16px; color:var(--muted); font-size:14px}
+    .field{display:flex; flex-direction:column; gap:6px; margin:10px 0}
+    .field label{font-size:13px; color:#d7e6ff}
+    .field input{
+      width:100%;
+      background:#0e1530;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:11px 12px;
+      color:var(--text);
+      outline:none;
+    }
+    .field input:focus{border-color:rgba(79, 92, 125, 0.6)}
+    .row2{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:10px}
+    .msg{
+      margin-top:10px; font-size:13px;
+      padding:10px 12px; border-radius:12px; border:1px solid var(--border);
+      background:rgba(255,255,255,.03); display:none;
+    }
+    .msg.show{display:block}
+    .msg.ok{border-color:rgba(0,210,168,.35); color:#cafff2}
+    .msg.err{border-color:rgba(255,107,107,.35); color:#ffd6d6}
+    .smalllink{color:#b9c9e6; font-size:13px}
+    .smalllink:hover{text-decoration:underline}
+
+    .center-box{
+      min-height:calc(100vh - 90px);
+      display:flex; align-items:center; justify-content:center; padding:20px;
+    }
+    .box{
+      background:rgba(17, 23, 49, 0.85);
+      border:1px solid var(--border);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      width:min(440px, 95vw);
+      padding:28px;
+      text-align:center;
+    }
+    .box h1{margin:0 0 10px; font-size:24px}
+    .box p{margin:0 0 18px; color:var(--muted)}
+    .box .btn{width:100%}
+
+    footer{margin:36px 0 50px; color:var(--muted); text-align:center}
+    .notice{margin-top:6px; font-size:13px}
+    #page-home{ 
+   background: linear-gradient(to right, #473c6e, #0c0a3d);
+    }
+    .content{
+        background-color: rgb(48, 48, 117);
+    }
+    .mores{ background-color: rgb(25, 25, 58);}
+  </style>
+</head>
+
+<body >
+
+  <!-- Header -->
+  <header class="mores">
+    <div class="container nav">
+      <div class="logo" role="button" tabindex="0" onclick="go('home')">
+        <div class="logo-badge">
+          <img src="/image/Risvi World Logo Design.png" alt="logo" onerror="this.style.display='none'">
+        </div>
+        <div style="color:#16ecda; font-size:20px;"><span style="color: whitesmoke;">Daily </span> <span style="color: rgb(233, 154, 8);">Haat</span> </div>
+      </div>
+
+      <div class="search" id="homeSearchWrap" style="display:none">
+        <input id="searchInput" type="search" placeholder="খুঁজুন: মোবাইল, ল্যাপটপ, হেডফোন…" aria-label="Search products" />
+      </div>
+
+      <div class="right-actions">
+        <span class="pill" id="userPill" style="display:none">👤 User</span>
+        <button class="pill danger" id="logoutBtn" style="display:none">Logout</button>
+
+        <button class="pill" id="toLoginBtn">Login</button>
+        <button class="pill brand" id="toSignupBtn">Sign Up</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME PAGE -->
+    <section class="page active" id="page-home">
+      <div class="container">
+        <section class="hero">
+          <div class="hero-banner">
+            <div>
+              <h1>DailyHaat – আপনার কেনাকাটার নতুন দিগন্ত</h1>
+              <h3>“ফ্যাশন, টেকনোলজি আর লাইফস্টাইল – সবকিছু একসাথে”</h3>
+              <p>আধুনিক ট্রেন্ড, সেরা অফার আর বিশ্বস্ত অনলাইন শপিং অভিজ্ঞতা। এখনই শুরু করুন আপনার স্মার্ট কেনাকাটা!</p>
+            </div>
+          </div>
+
+          <div class="filters" role="tablist" aria-label="Category filters">
+            <button class="active" data-cat="সব">সব</button>
+            <button data-cat="ইলেকট্রনিক্স">ইলেকট্রনিক্স</button>
+            <button data-cat="ফ্যাশন">ফ্যাশন</button>
+            <button data-cat="হোম & কিচেন">হোম & কিচেন</button>
+            <button data-cat="স্পোর্টস">স্পোর্টস</button>
+            <button data-cat="অফার">অফার</button>
+          </div>
+        </section>
+
+        <section class="grid" id="productGrid" aria-label="Product grid"></section>
+
+        <footer class="container">
+          <p class="notice" style="margin-top: 30px;">যদি কোনো সমস্যায় পড়েন, আমাদের সাথে যোগাযোগ করুন:</p>
+          <p class="contact">
+            📧 <a href="mailto:risvirajib@gmail.com">risvirajib@gmail.com</a> |
+            📞 <a href="tel:0183098171">01830-98171</a>
+          </p>
+          <h3 class="notice" style="margin-top: 40px; margin-bottom: 40px;">
+            আপনার বিশ্বস্ত অনলাইন শপিং সঙ্গী / <br> Daily Shop – Online Shopping Made Easy
+          </h3>
+        </footer>
+      </div>
+    </section>
+
+    <!-- SIGNUP PAGE -->
+    <section class="page" id="page-signup"  >
+      <div class="auth-wrap" style="background-image: url('/image/erol-ahmed-IHL-Jbawvvo-unsplash.jpg'); background-repeat: no-repeat; background-size: cover;"
+>
+        <div class="auth-card">
+          <h2>📝 Create Account</h2>
+          <p>একবার অ্যাকাউন্ট খুললেই অর্ডার করতে পারবেন।</p>
+
+          <form id="signupForm" autocomplete="on">
+            <div class="field">
+              <label>পূর্ণ নাম</label>
+              <input name="name" type="text" placeholder="আপনার নাম" required>
+            </div>
+            <div class="field">
+              <label>ইমেইল ঠিকানা</label>
+              <input name="email" type="email" placeholder="example@email.com" required>
+            </div>
+            <div class="field">
+              <label>ইউজারনেম</label>
+              <input name="username" type="text" placeholder="username" required>
+            </div>
+            <div class="field">
+              <label>পাসওয়ার্ড</label>
+              <input name="password" type="password" placeholder="কমপক্ষে 6 অক্ষর" minlength="6" required>
+            </div>
+            <div class="field">
+              <label>পাসওয়ার্ড নিশ্চিত করুন</label>
+              <input name="confirm" type="password" placeholder="একই পাসওয়ার্ড দিন" minlength="6" required>
+            </div>
+
+            <button class="btn primary" type="submit">Sign Up</button>
+
+            <div class="msg" id="signupMsg"></div>
+
+            <div class="row2">
+              <span class="smalllink">আগেই অ্যাকাউন্ট আছে?</span>
+              <a class="smalllink" href="#" onclick="go('login');return false;">Login</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOGIN PAGE -->
+    <section class="page " id="page-login" 
+    style="background-image: url('/image/erol-ahmed-IHL-Jbawvvo-unsplash.jpg'); background-repeat: no-repeat; background-size: cover;"
+
+     
+     >
+      <div class="auth-wrap "
+      style="background-image: url('/image/erol-ahmed-IHL-Jbawvvo-unsplash.jpg'); background-repeat: no-repeat; background-size: cover;"
+
+      >
+        <div class="auth-card">
+          <h2>🔐 Login</h2>
+          <p>আপনার অ্যাকাউন্টে সাইন ইন করুন।</p>
+
+          <form id="loginForm" autocomplete="on">
+            <div class="field">
+              <label>Email</label>
+              <input name="email" type="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="field">
+              <label>Password</label>
+              <input name="password" type="password" placeholder="Enter your password" required>
+            </div>
+
+            <div class="row2">
+              <label style="display:flex; gap:8px; align-items:center; color:#d7e6ff; font-size:13px;">
+                <input type="checkbox" name="remember" style="width:16px; height:16px;">
+                Remember me
+              </label>
+              <a class="smalllink" href="#" onclick="go('forgot');return false;">Forgot password?</a>
+            </div>
+
+            <button class="btn primary" type="submit">Login</button>
+
+            <div class="msg" id="loginMsg"></div>
+
+            <div class="row2">
+              <span class="smalllink">একাউন্ট নেই?</span>
+              <a class="smalllink" href="#" onclick="go('signup');return false;">Register</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORGOT PAGE -->
+    <section class="page" id="page-forgot">
+      <div class="auth-wrap" style="background-image: url('/image/erol-ahmed-IHL-Jbawvvo-unsplash.jpg'); background-repeat: no-repeat; background-size: cover;"
+>
+        <div class="auth-card">
+          <h2>🔁 Forgot Password</h2>
+          <p>ডেমো: ইমেইল মিললে মেসেজ দেখাবে।</p>
+
+          <form id="forgotForm">
+            <div class="field">
+              <label>Email Address</label>
+              <input name="email" type="email" placeholder="Enter your email" required>
+            </div>
+
+            <button class="btn primary" type="submit">Send Reset Link</button>
+            <div class="msg" id="forgotMsg"></div>
+
+            <div class="row2">
+              <a class="smalllink" href="#" onclick="go('login');return false;">Back to Login</a>
+              <a class="smalllink" href="#" onclick="go('signup');return false;">Create Account</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIGNUP SUCCESS PAGE -->
+    <section class="page" id="page-success">
+      <div class="center-box" style="background-image: url('/image/erol-ahmed-IHL-Jbawvvo-unsplash.jpg'); background-repeat: no-repeat; background-size: cover;"
+>
+        <div class="box">
+          <h1>✅ Sign Up Successful!</h1>
+          <p>অভিনন্দন 🎉 আপনার অ্যাকাউন্ট তৈরি হয়ে গেছে। এখন লগইন করুন।</p>
+          <button class="btn primary" onclick="go('login')">Go to Login</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONFIRM PAGE -->
+    <section class="page" id="page-confirm">
+      <div class="center-box" style="background-image: url('/image/erol-ahmed-IHL-Jbawvvo-unsplash.jpg'); background-repeat: no-repeat; background-size: cover;"
+>
+        <div class="box">
+          <h1 style="color:#7bffb8;">✅ অর্ডার কনফার্ম হয়েছে!</h1>
+          <p id="confirmText">ধন্যবাদ! আপনার অর্ডার সফলভাবে কনফার্ম করা হয়েছে।</p>
+          <button class="btn primary" onclick="go('home')">হোম পেজে ফিরে যান</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ORDER MODAL -->
+  <div id="orderModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="orderTitle">
+      <div class="modal-top">
+        <strong>🛒 Order Form</strong>
+        <button class="pill" onclick="closeOrder()">✕ বন্ধ করুন</button>
+      </div>
+
+      <div class="modal-body">
+        <h3 id="orderTitle">পণ্য অর্ডার করুন</h3>
+        <p style="margin-top:0; color:var(--muted); font-size:14px">আপনার তথ্য দিয়ে অর্ডার কনফার্ম করুন।</p>
+
+        <form id="orderForm">
+          <div class="row">
+            <label>
+              <span>পণ্যের নাম</span>
+              <input name="product" placeholder="যে পণ্যটি চান তার নাম লিখুন" required />
+            </label>
+            <label>
+              <span>ভ্যারিয়েন্ট</span>
+              <select name="variant">
+                <option>ডিফল্ট</option>
+                <option>কালো</option>
+                <option>সাদা</option>
+                <option>নীল</option>
+              </select>
+            </label>
+            <label>
+              <span>পরিমাণ</span>
+              <input type="number" name="qty" min="1" value="1" required />
+            </label>
+            <label>
+              <span>ফোন নাম্বার</span>
+              <input type="tel" name="phone" placeholder="01XXXXXXXXX" required />
+            </label>
+            <label class="full">
+              <span>ঠিকানা</span>
+              <textarea name="address" rows="3" placeholder="হাউজ/রোড/এরিয়া" required></textarea>
+            </label>
+          </div>
+
+          <div class="footer">
+            <button class="btn outline" type="button" onclick="closeOrder()">বাতিল</button>
+            <button class="btn primary" type="submit">অর্ডার কনফার্ম</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    
+    const pages = ["home","signup","login","forgot","success","confirm"];
+
+    function showPage(name){
+      pages.forEach(p => {
+        const el = document.getElementById("page-" + p);
+        if (el) el.classList.toggle("active", p === name);
+      });
+
+      document.getElementById("homeSearchWrap").style.display = (name === "home") ? "flex" : "none";
+      window.scrollTo({top:0, behavior:"instant"});
+    }
+    function go(name){
+      if (name === "home" && !getActiveSession()) {
+        showPage("login");
+        return;
+      }
+      showPage(name);
+      updateHeader();
+      if (name === "home") renderProducts();
+      if (name === "confirm") renderConfirm();
+    }
+
+    
+    const LS_USERS = "rw_users";
+    const SS_SESSION = "rw_session_ss";
+    const LS_SESSION = "rw_session_ls";
+
+    function getUsers(){
+      try { return JSON.parse(localStorage.getItem(LS_USERS)) || []; }
+      catch { return []; }
+    }
+    function setUsers(users){ localStorage.setItem(LS_USERS, JSON.stringify(users)); }
+
+    function getActiveSession(){
+      try{
+        const s1 = sessionStorage.getItem(SS_SESSION);
+        if (s1) return JSON.parse(s1);
+      }catch{}
+      try{
+        const s2 = localStorage.getItem(LS_SESSION);
+        if (s2) return JSON.parse(s2);
+      }catch{}
+      return null;
+    }
+
+    function setSession(session, remember){
+      if (remember) {
+        localStorage.setItem(LS_SESSION, JSON.stringify(session));
+        sessionStorage.removeItem(SS_SESSION);
+      } else {
+        sessionStorage.setItem(SS_SESSION, JSON.stringify(session));
+        localStorage.removeItem(LS_SESSION);
+      }
+    }
+    function logout(){
+      localStorage.removeItem(LS_SESSION);
+      sessionStorage.removeItem(SS_SESSION);
+    }
+
+    function registerUser({name,email,username,password}){
+      const users = getUsers();
+      if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+        throw new Error("এই ইমেইল দিয়ে আগে থেকেই অ্যাকাউন্ট আছে।");
+      }
+      if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+        throw new Error("এই ইউজারনেম নেওয়া আছে। অন্যটা দিন।");
+      }
+      const user = { id: (crypto?.randomUUID?.() || String(Date.now())), name, email, username, password, createdAt: Date.now() };
+      users.push(user);
+      setUsers(users);
+      return user;
+    }
+
+    function loginUser({email,password,remember}){
+      const users = getUsers();
+      const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+      if (!user) throw new Error("ইমেইল পাওয়া যায়নি।");
+      if (user.password !== password) throw new Error("পাসওয়ার্ড ভুল।");
+
+      const session = { userId:user.id, name:user.name, email:user.email, username:user.username, createdAt:Date.now() };
+      setSession(session, remember);
+      return session;
+    }
+
+   
+    function updateHeader(){
+      const session = getActiveSession();
+      const userPill = document.getElementById("userPill");
+      const logoutBtn = document.getElementById("logoutBtn");
+      const toLoginBtn = document.getElementById("toLoginBtn");
+      const toSignupBtn = document.getElementById("toSignupBtn");
+
+      if (session && session.userId){
+        userPill.style.display = "inline-flex";
+        userPill.textContent = `👤 ${session.name || session.username}`;
+        logoutBtn.style.display = "inline-flex";
+
+        toLoginBtn.style.display = "none";
+        toSignupBtn.style.display = "none";
+      } else {
+        userPill.style.display = "none";
+        logoutBtn.style.display = "none";
+
+        toLoginBtn.style.display = "inline-flex";
+        toSignupBtn.style.display = "inline-flex";
+      }
+    }
+
+    document.getElementById("toLoginBtn").addEventListener("click", () => go("login"));
+    document.getElementById("toSignupBtn").addEventListener("click", () => go("signup"));
+    document.getElementById("logoutBtn").addEventListener("click", () => { logout(); go("login"); });
+
+   
+    const products = [
+      {cat:"ইলেকট্রনিক্স", title:"Smartphone X12 (6/128)", now:"৳ 18,990", old:"৳ 23,200", off:"-18%", img:"/image/ss.webp"},
+      {cat:"ইলেকট্রনিক্স", title:'UltraBook 14" Ryzen 7', now:"৳ 79,990", old:"৳ 88,500", off:"-10%", img:"/image/laptop.webp"},
+      {cat:"ইলেকট্রনিক্স", title:"Noise-Cancel Headphones", now:"৳ 5,490", old:"৳ 7,290", off:"-25%", img:"/image/headphone.webp"},
+      {cat:"ইলেকট্রনিক্স", title:"Smartwatch Pro", now:"৳ 3,990", old:"৳ 4,690", off:"-15%", img:"/image/watch.webp"},
+      {cat:"ইলেকট্রনিক্স", title:"televition 56 inch", now:"৳ 89,500", old:"৳ 100,300", off:"-12%", img:"/image/tv.jpg"},
+      {cat:"ইলেকট্রনিক্স", title:"Mirrorless Camera 24MP", now:"৳ 42,500", old:"৳ 48,300", off:"-12%", img:"/image/camera.jpg"},
+      {cat:"ইলেকট্রনিক্স", title:"Powerbank", now:"৳ 2,500", old:"৳ 4,300", off:"-50%", img:"/image/powerbank.jpg"},
+      {cat:"ইলেকট্রনিক্স", title:"tablate", now:"৳ 25,500", old:"৳ 28,000", off:"-20%", img:"/image/tav.jpg"},
+
+      
+
+      {cat:"ফ্যাশন", title:"Running Shoes", now:"৳ 2,690", old:"৳ 3,360", off:"-20%", img:"/image/shoes.jpg"},
+      {cat:"ফ্যাশন", title:"Urban Backpack 20L", now:"৳ 1,590", old:"৳ 1,720", off:"-8%", img:"/image/bag.jpg"},
+      {cat:"ফ্যাশন", title:"Urban Backpack 20L", now:"৳ 590", old:"৳720", off:"-8%", img:"/image/belt.jpg"},
+      {cat:"ফ্যাশন", title:"Urban Backpack 20L", now:"৳ 590", old:"৳720", off:"-8%", img:"/image/jaket.jpg"},
+      {cat:"ফ্যাশন", title:"Urban Backpack 20L", now:"৳ 590", old:"৳720", off:"-8%", img:"/image/hudi.jpg"},
+      {cat:"ফ্যাশন", title:"Urban Backpack 20L", now:"৳ 900", old:"৳920", off:"-8%", img:"/image/shirt.jpg"},
+      {cat:"ফ্যাশন", title:"Urban Backpack 20L", now:"৳ 2100", old:"৳2110", off:"-8%", img:"/image/watch.webp"},
+      {cat:"ফ্যাশন", title:"Urban Backpack 20L", now:"৳ 590", old:"৳820", off:"-8%", img:"/image/headphhone.webp"},
+
+      {cat:"হোম & কিচেন", title:"Kitchen Mixer 600W", now:"৳ 2,990", old:"৳ 3,850", off:"-22%", img:"/image/cook.jpg"},
+      {cat:"হোম & কিচেন", title:"Kitchen Mixer 600W", now:"৳ 2,990", old:"৳ 3,850", off:"-22%", img:"/image/frying pan.jpg"},
+      {cat:"হোম & কিচেন", title:"Kitchen Mixer 600W", now:"৳ 2,990", old:"৳ 3,850", off:"-22%", img:"/image/rice cooker.jpg"},
+      {cat:"হোম & কিচেন", title:"Kitchen Mixer 600W", now:"৳ 2,990", old:"৳ 3,850", off:"-22%", img:"/image/dinner set.jpg"},
+      {cat:"হোম & কিচেন", title:"Kitchen Mixer 600W", now:"৳ 2,990", old:"৳ 3,850", off:"-22%", img:"/image/knife set.jpg"},
+      {cat:"হোম & কিচেন", title:"Kitchen Mixer 600W", now:"৳ 2,990", old:"৳ 3,850", off:"-22%", img:"/image/cutting board.jpg"},
+
+
+      {cat:"স্পোর্টস", title:"Premium Football Size-5", now:"৳ 990", old:"৳ 1,040", off:"-5%", img:"/image/ball.jpg"},
+      {cat:"স্পোর্টস", title:"Premium Football Size-5", now:"৳ 990", old:"৳ 1,040", off:"-5%", img:"/image/cricket bat.jpg"},
+      {cat:"স্পোর্টস", title:"Premium Football Size-5", now:"৳ 990", old:"৳ 1,040", off:"-5%", img:"/image/cricket ball.jpg"},
+    //   {cat:"স্পোর্টস", title:"Premium Football Size-5", now:"৳ 990", old:"৳ 1,040", off:"-5%", img:"/dumbbell.jpg"},
+    //   {cat:"স্পোর্টস", title:"Premium Football Size-5", now:"৳ 990", old:"৳ 1,040", off:"-5%", img:"/treadmill.jpg"},
+    //   {cat:"স্পোর্টস", title:"Premium Football Size-5", now:"৳ 990", old:"৳ 1,040", off:"-5%", img:"/bicycle.jpg"},
+    //   {cat:"স্পোর্টস", title:"Premium Football Size-5", now:"৳ 990", old:"৳ 1,040", off:"-5%", img:"/swimming goggles.jpg"},
+      
+      {cat:"ইলেকট্রনিক্স", title:"Mechanical Keyboard", now:"৳ 3,290", old:"৳ 3,820", off:"-14%", img:"/image/keybord.jpg"},
+      {cat:"ইলেকট্রনিক্স", title:"Wireless Mouse", now:"৳ 790", old:"৳ 870", off:"-9%", img:"/image/mouse.jpg"},
+
+      {cat:"ফ্যাশন", title:"Cotton T-Shirt", now:"৳ 390", old:"৳ 560", off:"-30%", img:"/image/tshart.jpg"},
+
+      {cat:"অফার", title:"Bike", now:"৳ 46,900", old:"৳ 78,930", off:"-40%", img:"/image/bike.jpg"},
+
+      {cat:"হোম & কিচেন", title:"Insulated Bottle 1L", now:"৳ 690", old:"৳ 730", off:"-6%", img:"/image/bottol.jpg"},
+
+      {cat:"অফার", title:"Car", now:"৳ 690,000", old:"৳ 730,000", off:"-6%", img:"/image/car.jpg"},
+
+      {cat:"হোম & কিচেন", title:"Washing Machine", now:"৳ 4,900", old:"৳ 5,300", off:"-8%", img:"/image/wash.jpg"},
+    ];
+
+    let activeCat = "সব";
+
+    function cardHTML(p){
+      
+      const safeImg = p.img || "";
+      return `
+      <article class="card" data-title="${escapeHtml(p.title)}" data-cat="${escapeHtml(p.cat)}">
+        <div class="thumb">
+          <img src="${safeImg}" alt="${escapeHtml(p.title)}"
+               onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, rgba(91,140,255,.25), rgba(0,210,168,.18))';">
+          <span class="chip">${escapeHtml(p.off)}</span>
+        </div>
+        <div class="content">
+          <div class="title">${escapeHtml(p.title)}</div>
+          <div class="price"><span class="now">${escapeHtml(p.now)}</span> <span class="old">${escapeHtml(p.old)}</span></div>
+          <div class="actions">
+            <button class="btn outline" type="button" onclick="alert('ডেমো: ডিটেইলস পেজ পরে যোগ করা যাবে ✅')">ডিটেইলস</button>
+            <button class="btn primary" type="button" onclick="openOrder('${escapeJs(p.title)}')">অর্ডার</button>
+          </div>
+        </div>
+      </article>`;
+    }
+
+    function renderProducts(){
+      const grid = document.getElementById("productGrid");
+      if (!grid) return;
+      grid.innerHTML = products.map(cardHTML).join("");
+
+      applyFilters();
+    }
+
+    function applyFilters(){
+      const q = (document.getElementById("searchInput").value || "").toLowerCase().trim();
+      document.querySelectorAll("#productGrid .card").forEach(card => {
+        const title = card.getAttribute("data-title").toLowerCase();
+        const cat = card.getAttribute("data-cat");
+        const matchCat = (activeCat === "সব") || (cat === activeCat);
+        const matchSearch = !q || title.includes(q);
+        card.style.display = (matchCat && matchSearch) ? "flex" : "none";
+      });
+    }
+
+    document.getElementById("searchInput").addEventListener("input", applyFilters);
+
+    document.querySelectorAll(".filters button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filters button").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        activeCat = btn.getAttribute("data-cat");
+        applyFilters();
+      });
+    });
+
+   
+    function openOrder(productName){
+      if (!getActiveSession()){
+        go("login");
+        return;
+      }
+      document.querySelector('#orderForm input[name="product"]').value = productName || "";
+      document.getElementById("orderModal").classList.add("open");
+    }
+    function closeOrder(){
+      document.getElementById("orderModal").classList.remove("open");
+    }
+    window.openOrder = openOrder;
+    window.closeOrder = closeOrder;
+
+    document.getElementById("orderForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const session = getActiveSession();
+      if (!session){ go("login"); return; }
+
+      const fd = new FormData(e.target);
+      const order = Object.fromEntries(fd.entries());
+      order.createdAt = Date.now();
+      order.user = session;
+
+      localStorage.setItem("rw_last_order", JSON.stringify(order));
+      closeOrder();
+      go("confirm");
+    });
+
+    function renderConfirm(){
+      const el = document.getElementById("confirmText");
+      let txt = "ধন্যবাদ! আপনার অর্ডার সফলভাবে কনফার্ম করা হয়েছে। আমাদের প্রতিনিধি খুব শীঘ্রই আপনার সাথে যোগাযোগ করবে।";
+      try{
+        const last = JSON.parse(localStorage.getItem("rw_last_order"));
+        if (last?.product){
+          txt = `✅ ${last.product} (${last.qty || 1} টি) অর্ডার কনফার্ম হয়েছে। ফোন: ${last.phone || "-"} — ঠিকানা: ${last.address || "-"}`;
+        }
+      }catch{}
+      el.textContent = txt;
+    }
+
+   
+    const signupForm = document.getElementById("signupForm");
+    const signupMsg = document.getElementById("signupMsg");
+
+    signupForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      signupMsg.className = "msg";
+      signupMsg.textContent = "";
+
+      const data = Object.fromEntries(new FormData(signupForm).entries());
+      if (data.password !== data.confirm){
+        showMsg(signupMsg, "err", "পাসওয়ার্ড মিলেনি। আবার দিন।");
+        return;
+      }
+      try{
+        registerUser({name:data.name, email:data.email, username:data.username, password:data.password});
+        showMsg(signupMsg, "ok", "অ্যাকাউন্ট তৈরি হয়েছে ✅");
+        signupForm.reset();
+        setTimeout(() => go("success"), 600);
+      }catch(err){
+        showMsg(signupMsg, "err", err.message || "Signup error");
+      }
+    });
+
+    const loginForm = document.getElementById("loginForm");
+    const loginMsg = document.getElementById("loginMsg");
+
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      loginMsg.className = "msg";
+      loginMsg.textContent = "";
+
+      const fd = new FormData(loginForm);
+      const email = fd.get("email");
+      const password = fd.get("password");
+      const remember = fd.get("remember") === "on";
+
+      try{
+        loginUser({email, password, remember});
+        showMsg(loginMsg, "ok", "Login successful ✅");
+        loginForm.reset();
+        setTimeout(() => go("home"), 450);
+      }catch(err){
+        showMsg(loginMsg, "err", err.message || "Login error");
+      }
+    });
+
+    const forgotForm = document.getElementById("forgotForm");
+    const forgotMsg = document.getElementById("forgotMsg");
+
+    forgotForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = new FormData(forgotForm).get("email");
+      const user = getUsers().find(u => u.email.toLowerCase() === String(email).toLowerCase());
+      if (user){
+        showMsg(forgotMsg, "ok", "ডেমো: আপনার ইমেইলে রিসেট লিংক পাঠানো হয়েছে ✅");
+      } else {
+        showMsg(forgotMsg, "err", "এই ইমেইলে কোনো অ্যাকাউন্ট নেই।");
+      }
+    });
+
+    function showMsg(el, type, text){
+      el.className = "msg show " + (type === "ok" ? "ok" : "err");
+      el.textContent = text;
+    }
+
+  
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+    function escapeJs(s){
+      return String(s).replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/\n/g,"\\n");
+    }
+
+   
+    updateHeader();
+    if (getActiveSession()){
+      showPage("home");
+      renderProducts();
+      document.getElementById("homeSearchWrap").style.display = "flex";
+    } else {
+      showPage("login");
+      document.getElementById("homeSearchWrap").style.display = "none";
+    }
+  </script>
+</body>
+</html>

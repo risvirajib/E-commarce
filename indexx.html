@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Risvi World</title>
+  <link rel="shortcut icon" href="Risvi World Logo Design.png" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#121832;
+      --muted:#8ea0b8;
+      --text:#e7edf7;
+      --brand:#5b8cff;
+      --accent:#00d2a8;
+      --danger:#ff6b6b;
+      --border:rgba(255,255,255,.08);
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:linear-gradient(180deg,#0b1020 0%,#0f1733 100%);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial; color:var(--text);
+      line-height:1.5;
+    }
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%; display:block}
+
+    .container{max-width:1200px; margin:0 auto; padding:0 20px}
+    header{
+      position:sticky; top:0; z-index:50; backdrop-filter:blur(8px);
+      background:rgba(11,16,32,.6); border-bottom:1px solid var(--border);
+    }
+    .nav{display:flex; gap:16px; align-items:center; justify-content:space-between; padding:14px 0}
+    .logo{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px}
+    .logo-badge{width:34px; height:34px; border-radius:10px; background:linear-gradient(135deg,var(--brand),#7aa4ff); display:grid; place-items:center; box-shadow:var(--shadow)}
+    .logo-badge span{font-weight:900}
+
+    .search{flex:1; display:flex; align-items:center; gap:10px; max-width:560px; margin:0 16px}
+    .search input{
+      width:100%; background:var(--card); border:1px solid var(--border); color:var(--text);
+      padding:12px 14px; border-radius:12px; outline:none;
+    }
+    .pill{display:inline-flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--border); padding:10px 14px; border-radius:999px}
+
+    .hero{padding:32px 0 10px}
+    .hero-banner{
+      background:linear-gradient(135deg,rgba(91,140,255,.18),rgba(0,210,168,.12));
+      border:1px solid var(--border); border-radius:var(--radius); padding:22px; display:flex; gap:24px; align-items:center; box-shadow:var(--shadow)
+    }
+    .hero h1{margin:0 0 6px; font-size:28px}
+    .hero p{margin:0; color:var(--muted)}
+
+    .filters{display:flex; gap:10px; flex-wrap:wrap; margin:18px 0}
+    .filters a{padding:8px 12px; border:1px solid var(--border); background:var(--card); border-radius:999px; font-size:14px; color:#cfe1ff}
+    .filters a.active{background:linear-gradient(135deg,var(--brand),#7aa4ff); color:#0b1020; border-color:transparent}
+
+    .grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
+    @media(max-width:990px){.grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:720px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:480px){.grid{grid-template-columns:1fr}}
+
+    .card{background:var(--card); border:1px solid var(--border); border-radius:18px; overflow:hidden; box-shadow:var(--shadow); display:flex; flex-direction:column}
+    .card .thumb{position:relative; aspect-ratio:1.2/1; overflow:hidden}
+    .card .thumb img{width:100%; height:100%; object-fit:cover; transition:transform .4s ease}
+    .card:hover .thumb img{transform:scale(1.06)}
+    .chip{position:absolute; left:10px; top:10px; background:rgba(0,210,168,.9); color:#001a14; font-weight:700; padding:6px 10px; border-radius:999px; font-size:12px}
+    .content{padding:14px; display:flex; flex-direction:column; gap:10px}
+    .title{font-weight:700; font-size:16px}
+    .price{display:flex; align-items:center; justify-content:space-between}
+    .price .now{font-weight:800}
+    .price .old{color:var(--muted); text-decoration:line-through; font-size:14px}
+    .actions{display:flex; gap:10px; margin-top:auto}
+    .btn{
+      flex:1; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 12px;
+      border-radius:12px; border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer; font-weight:600
+    }
+    .btn.primary{background:linear-gradient(135deg,var(--brand),#7aa4ff); color:#08122c; border-color:transparent}
+    .btn.outline:hover{background:rgba(255,255,255,.05)}
+
+    #order{position:fixed; inset:0; display:none; place-items:center; background:rgba(2,6,23,.6); backdrop-filter:blur(6px); padding:20px}
+    #order:target{display:grid}
+    .modal{width:min(560px,95vw); background:var(--card); border:1px solid var(--border); border-radius:20px; box-shadow:var(--shadow)}
+    .modal header{position:unset; background:transparent; border:none}
+    .modal-body{padding:18px}
+    .modal h3{margin:0 0 8px}
+    .row{display:grid; gap:10px; grid-template-columns:1fr 1fr}
+    .row > label{display:flex; flex-direction:column; gap:6px}
+    .modal input,.modal select,.modal textarea{
+      background:#0e1530; border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--text)
+    }
+    .modal .full{grid-column:1/-1}
+    .modal .footer{display:flex; justify-content:flex-end; gap:10px; margin-top:14px}
+    .link-like{display:inline-flex; align-items:center; gap:8px}
+
+    footer{margin:36px 0 50px; color:var(--muted); text-align:center}
+    .notice{margin-top:6px; font-size:13px}
+    .world img{
+        height: 30px;
+        width: 30px;
+        border-radius: 30px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="logo">
+        <div class="logo-badge"><span class="world"><img src="Risvi World Logo Design.png" alt=""></span></div>
+        <div style="color: #16ecda; font-size: 20px;">Risvi World</div>
+      </div>
+      <div class="search">
+        <input type="search" placeholder="খুঁজুন: মোবাইল, ল্যাপটপ, হেডফোন…   " style=" box-shadow:  0 0 19px  red;"  aria-label="Search products" />
+      </div>
+      <a style="color:white ; width: 30px;; "  class="pill" href="setting.html" aria-label="Open order form"> Login</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-banner">
+        <div>
+          <h1>Risvi World – আপনার কেনাকাটার নতুন দিগন্ত</h1>
+          <h3>“ফ্যাশন, টেকনোলজি আর লাইফস্টাইল – সবকিছু একসাথে”</h3>
+          <p>আধুনিক ট্রেন্ড, সেরা অফার আর বিশ্বস্ত অনলাইন শপিং অভিজ্ঞতা। এখনই শুরু করুন আপনার স্মার্ট কেনাকাটা!</p>
+        </div>
+      </div>
+      <div class="filters">
+        <a href="#" class="active">সব</a>
+        <a href="ইলেকট্রনিক্স.html">ইলেকট্রনিক্স</a>
+        <a href="ফ্যাশন.html">ফ্যাশন</a>
+        <a href="হোম & কিচেন.html">হোম &amp; কিচেন</a>
+        <a href="স্পোর্টস.html">স্পোর্টস</a>
+        <a href="অফার.html">অফার</a>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="Product grid">
+      
+      <article class="card">
+        <div class="thumb">
+          <img src="/image/ss.webp" alt="Smartphone" />
+          <span class="chip">-18%</span>
+        </div>
+        <div class="content">
+          <div class="title">Smartphone X12 (6/128)</div>
+          <div class="price"><span class="now">৳ 18,990</span> <span class="old">৳ 23,200</span></div>
+          <div class="actions">
+            <a class="btn outline" href="#">ডিটেইলস</a>
+            <a class="btn primary" href="#order">অর্ডার</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb">
+          <img src="/image/laptop.webp" alt="Laptop" />
+          <span class="chip">-10%</span>
+        </div>
+        <div class="content">
+          <div class="title">UltraBook 14" Ryzen 7</div>
+          <div class="price"><span class="now">৳ 79,990</span> <span class="old">৳ 88,500</span></div>
+          <div class="actions">
+            <a class="btn outline" href="#">ডিটেইলস</a>
+            <a class="btn primary" href="#order">অর্ডার</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb">
+          <img src="/image/headphone.webp" alt="Headphones" />
+          <span class="chip">-25%</span>
+        </div>
+        <div class="content">
+          <div class="title">Noise‑Cancel Headphones</div>
+          <div class="price"><span class="now">৳ 5,490</span> <span class="old">৳ 7,290</span></div>
+          <div class="actions">
+            <a class="btn outline" href="#">ডিটেইলস</a>
+            <a class="btn primary" href="#order">অর্ডার</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb">
+          <img src="/image/watch.webp" alt="Smartwatch" />
+          <span class="chip">-15%</span>
+        </div>
+        <div class="content">
+          <div class="title">Smartwatch Pro</div>
+          <div class="price"><span class="now">৳ 3,990</span> <span class="old">৳ 4,690</span></div>
+          <div class="actions">
+            <a class="btn outline" href="#">ডিটেইলস</a>
+            <a class="btn primary" href="#order">অর্ডার</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb">
+          <img src="/image/camera.jpg" alt="Camera" />
+          <span class="chip">-12%</span>
+        </div>
+        <div class="content">
+          <div class="title">Mirrorless Camera 24MP</div>
+          <div class="price"><span class="now">৳ 42,500</span> <span class="old">৳ 48,300</span></div>
+          <div class="actions">
+            <a class="btn outline" href="#">ডিটেইলস</a>
+            <a class="btn primary" href="#order">অর্ডার</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb">
+          <img src="/image/shoes.html" alt="Shoes" />
+          <span class="chip">-20%</span>
+        </div>
+        <div class="content">
+          <div class="title">Running Shoes</div>
+          <div class="price"><span class="now">৳ 2,690</span> <span class="old">৳ 3,360</span></div>
+          <div class="actions">
+            <a class="btn outline" href="#">ডিটেইলস</a>
+            <a class="btn primary" href="#order">অর্ডার</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb">
+          <img src="/image/bag.jpg" alt="Backpack" />
+          <span class="chip">-8%</span>
+        </div>
+        <div class="content">
+          <div class="title">Urban Backpack 20L</div>
+          <div class="price"><span class="now">৳ 1,590</span> <span class="old">৳ 1,720</span></div>
+          <div class="actions">
+            <a class="btn outline" href="#">ডিটেইলস</a>
+            <a class="btn primary" href="#order">অর্ডার</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb">
+          <img src="/image/cook.jpg" alt="Kitchen Mixer" />
+          <span class="chip">-22%</span>
+        </div>
+        <div class="content">
+          <div class="title">Kitchen Mixer 600W</div>
+          <div class="price"><span class="now">৳ 2,990</span> <span class="old">৳ 3,850</span></div>
+          <div class="actions">
+            <a class="btn outline" href="#">ডিটেইলস</a>
+            <a class="btn primary" href="#order">অর্ডার</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb">
+          <img src="/image/ball.jpg" alt="Football" />
+          <span class="chip">-5%</span>
+        </div>
+        <div class="content">
+          <div class="title">Premium Football Size‑5</div>
+          <div class="price"><span class="now">৳ 990</span> <span class="old">৳ 1,040</span></div>
+          <div class="actions">
+            <a class="btn outline" href="#">ডিটেইলস</a>
+            <a class="btn primary" href="#order">অর্ডার</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb">
+          <img src="/image/keybord.jpg" alt="Keyboard" />
+          <span class="chip">-14%</span>
+        </div>
+        <div class="content">
+          <div class="title">Mechanical Keyboard</div>
+          <div class="price"><span class="now">৳ 3,290</span> <span class="old">৳ 3,820</span></div>
+          <div class="actions">
+            <a class="btn outline" href="#">ডিটেইলস</a>
+            <a class="btn primary" href="#order">অর্ডার</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb">
+          <img src="/image/mouse.jpg" alt="Mouse" />
+          <span class="chip">-9%</span>
+        </div>
+        <div class="content">
+          <div class="title">Wireless Mouse</div>
+          <div class="price"><span class="now">৳ 790</span> <span class="old">৳ 870</span></div>
+          <div class="actions">
+            <a class="btn outline" href="#">ডিটেইলস</a>
+            <a class="btn primary" href="#order">অর্ডার</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb">
+          <img src="/image/tshart.jpg" alt="T‑Shirt" />
+          <span class="chip">-30%</span>
+        </div>
+        <div class="content">
+          <div class="title">Cotton T‑Shirt</div>
+          <div class="price"><span class="now">৳ 390</span> <span class="old">৳ 560</span></div>
+          <div class="actions">
+            <a class="btn outline" href="#">ডিটেইলস</a>
+            <a class="btn primary" href="#order">অর্ডার</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb">
+          <img src="/image/bike.jpg" alt="Water Bottle" />
+          <span class="chip">-6%</span>
+        </div>
+        <div class="content">
+          <div class="title">Bike</div>
+          <div class="price"><span class="now">৳ 46900</span> <span class="old">৳ 78930</span></div>
+          <div class="actions">
+            <a class="btn outline" href="#">ডিটেইলস</a>
+            <a class="btn primary" href="#order">অর্ডার</a>
+          </div>
+        </div>
+      </article>
+      
+      <article class="card">
+        <div class="thumb">
+          <img src="/image/bottol.jpg" alt="Water Bottle" />
+          <span class="chip">-6%</span>
+        </div>
+        <div class="content">
+          <div class="title">Insulated Bottle 1L</div>
+          <div class="price"><span class="now">৳ 690</span> <span class="old">৳ 730</span></div>
+          <div class="actions">
+            <a class="btn outline" href="#">ডিটেইলস</a>
+            <a class="btn primary" href="#order">অর্ডার</a>
+          </div>
+        </div>
+      </article>
+      
+      
+      <article class="card">
+        <div class="thumb">
+          <img src="car.jpg" alt="Water Bottle" />
+          <span class="chip">-6%</span>
+        </div>
+        <div class="content">
+          <div class="title">Car</div>
+          <div class="price"><span class="now">৳ 690000</span> <span class="old">৳ 730000</span></div>
+          <div class="actions">
+            <a class="btn outline" href="#">ডিটেইলস</a>
+            <a class="btn primary" href="#order">অর্ডার</a>
+          </div>
+        </div>
+      </article>
+      
+      <article class="card">
+        <div class="thumb">
+          <img src="wash.jpg" alt="Water Bottle" />
+          <span class="chip">-6%</span>
+        </div>
+        <div class="content">
+          <div class="title">Washing Maching</div>
+          <div class="price"><span class="now">৳ 4900</span> <span class="old">৳ 5300</span></div>
+          <div class="actions">
+            <a class="btn outline" href="#">ডিটেইলস</a>
+            <a class="btn primary" href="#order">অর্ডার</a>
+          </div>
+        </div>
+      </article>
+
+    </section>
+  </main>
+
+  <footer class="container">
+     <p class="notice" style="margin-top: 30px;">যদি কোনো সমস্যায় পড়েন, আমাদের সাথে যোগাযোগ করুন:</p>
+  <p class="contact">
+    📧 <a href="mailto:risvirajib@gmail.com">risvirajib@gmail.com</a> | 📞 <a href="tel:0183098171">01830-98171#</a>
+  </p>
+    <h3 class="notice" style="margin-top: 40px; margin-bottom: 40px;">আপনার বিশ্বস্ত অনলাইন শপিং সঙ্গী / <br>
+         Risvi World – Online Shopping Made Easy</h3>
+         
+  </footer>
+
+  <div id="order" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="orderTitle">
+      <header class="nav" style="padding:12px 18px; border-bottom:1px solid var(--border)">
+        <strong>🛒 Order Form</strong>
+        <a class="pill" href="#close" aria-label="Close">✕ বন্ধ করুন</a>
+      </header>
+      <div class="modal-body">
+        <h3 id="orderTitle">পণ্য অর্ডার করুন</h3>
+        <p style="margin-top:0; color:var(--muted); font-size:14px">— </p>
+        <form action="#" method="post">
+          <div class="row">
+            <label>
+              <span>পণ্যের নাম</span>
+              <input name="product" placeholder="যে পণ্যটি চান তার নাম লিখুন" required />
+            </label>
+            <label>
+              <span>ভ্যারিয়েন্ট</span>
+              <select name="variant">
+                <option>ডিফল্ট</option>
+                <option>কালো</option>
+                <option>সাদা</option>
+                <option>নীল</option>
+              </select>
+            </label>
+            <label>
+              <span>পরিমাণ</span>
+              <input type="number" name="qty" min="1" value="1" required />
+            </label>
+            <label>
+              <span>ফোন নাম্বার</span>
+              <input type="tel" name="phone" placeholder="01XXXXXXXXX" required />
+            </label>
+            <label class="full">
+              <span>ঠিকানা</span>
+              <textarea name="address" rows="3" placeholder="হাউজ/রোড/এরিয়া"></textarea>
+            </label>
+          </div>
+          <div class="footer">
+            <a class="btn outline" href="#close">বাতিল</a>
+            <button class="btn primary" type="submit">  <a href="confirm.html">অর্ডার কনফার্ম</a>  </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

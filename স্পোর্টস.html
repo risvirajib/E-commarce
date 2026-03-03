@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>স্পোর্টস</title>
+  <style>
+    body {margin:0; font-family: Arial, sans-serif; background:#0b1020; color:#fff;}
+    header {background:#121832; padding:15px; text-align:center; font-size:20px; font-weight:bold;}
+    .container {max-width:1200px; margin:auto; padding:20px;}
+    h1 {margin-bottom:20px;}
+    .grid {display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:20px;}
+    .card {background:#121832; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.5);}
+    .thumb img {width:100%; height:220px; object-fit:cover;}
+    .content {padding:15px;}
+    .title {font-size:16px; font-weight:600; margin-bottom:8px;}
+    .price {color:#5b8cff; font-weight:bold; margin-bottom:10px;}
+    .btn {display:inline-block; background:#5b8cff; color:#000; padding:8px 14px; border-radius:8px; text-decoration:none; font-weight:bold;}
+    .btn:hover {background:#4a7be0;}
+
+    #order {position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); display:none; align-items:center; justify-content:center;}
+    #order:target {display:flex;}
+    .modal {background:#121832; padding:25px; border-radius:12px; width:350px; max-width:90%;}
+    .modal h2 {margin-bottom:15px; font-size:20px;}
+    .modal form {display:flex; flex-direction:column; gap:10px;}
+    .modal input, .modal textarea, .modal select {padding:10px; border-radius:6px; border:none; outline:none;}
+    .modal button {padding:12px; background:#5b8cff; border:none; border-radius:8px; font-weight:bold; cursor:pointer;}
+    .modal button:hover {background:#4a7be0;}
+    .close {position:absolute; top:20px; right:30px; font-size:22px; text-decoration:none; color:#fff;}
+  </style>
+</head>
+<body>
+  <header>স্পোর্টস প্রোডাক্ট</header>
+
+  <div class="container">
+    <h1>স্পোর্টস প্রোডাক্টসমূহ</h1>
+    <div class="grid">
+      
+      <div class="card">
+        <div class="thumb"><img src="/image/ball.jpg" alt="Football"></div>
+        <div class="content">
+          <div class="title">ফুটবল</div>
+          <div class="price">৳ 1,500</div>
+          <a href="#order" class="btn" onclick="setProduct('ফুটবল')">অর্ডার করুন</a>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="thumb"><img src="/image/ব্যাডমিন্টন সেট.jpg" alt="Badminton Set"></div>
+        <div class="content">
+          <div class="title">ব্যাডমিন্টন সেট</div>
+          <div class="price">৳ 2,300</div>
+          <a href="#order" class="btn" onclick="setProduct('ব্যাডমিন্টন সেট')">অর্ডার করুন</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb"><img src="/image/ক্রিকেট ব্যাট.jpg" alt="Cricket Bat"></div>
+        <div class="content">
+          <div class="title">ক্রিকেট ব্যাট</div>
+          <div class="price">৳ 3,800</div>
+          <a href="#order" class="btn" onclick="setProduct('ক্রিকেট ব্যাট')">অর্ডার করুন</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb"><img src="/image/টেনিস র‍্যাকেট.jpg" alt="Tennis Racket"></div>
+        <div class="content">
+          <div class="title">টেনিস র‍্যাকেট</div>
+          <div class="price">৳ 2,700</div>
+          <a href="#order" class="btn" onclick="setProduct('টেনিস র‍্যাকেট')">অর্ডার করুন</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="container">
+    <div class="grid">
+      
+      <div class="card">
+        <div class="thumb"><img src="/image/ball.jpg" alt="Football"></div>
+        <div class="content">
+          <div class="title">ফুটবল</div>
+          <div class="price">৳ 1,500</div>
+          <a href="#order" class="btn" onclick="setProduct('ফুটবল')">অর্ডার করুন</a>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="thumb"><img src="/image/ব্যাডমিন্টন সেট.jpg" alt="Badminton Set"></div>
+        <div class="content">
+          <div class="title">ব্যাডমিন্টন সেট</div>
+          <div class="price">৳ 2,300</div>
+          <a href="#order" class="btn" onclick="setProduct('ব্যাডমিন্টন সেট')">অর্ডার করুন</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb"><img src="/image/ক্রিকেট ব্যাট.jpg" alt="Cricket Bat"></div>
+        <div class="content">
+          <div class="title">ক্রিকেট ব্যাট</div>
+          <div class="price">৳ 3,800</div>
+          <a href="#order" class="btn" onclick="setProduct('ক্রিকেট ব্যাট')">অর্ডার করুন</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb"><img src="/image/টেনিস র‍্যাকেট.jpg" alt="Tennis Racket"></div>
+        <div class="content">
+          <div class="title">টেনিস র‍্যাকেট</div>
+          <div class="price">৳ 2,700</div>
+          <a href="#order" class="btn" onclick="setProduct('টেনিস র‍্যাকেট')">অর্ডার করুন</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="container">
+  
+    <div class="grid">
+      
+      <div class="card">
+        <div class="thumb"><img src="/image/ball.jpg" alt="Football"></div>
+        <div class="content">
+          <div class="title">ফুটবল</div>
+          <div class="price">৳ 1,500</div>
+          <a href="#order" class="btn" onclick="setProduct('ফুটবল')">অর্ডার করুন</a>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="thumb"><img src="/image/ব্যাডমিন্টন সেট.jpg" alt="Badminton Set"></div>
+        <div class="content">
+          <div class="title">ব্যাডমিন্টন সেট</div>
+          <div class="price">৳ 2,300</div>
+          <a href="#order" class="btn" onclick="setProduct('ব্যাডমিন্টন সেট')">অর্ডার করুন</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb"><img src="/image/ক্রিকেট ব্যাট.jpg" alt="Cricket Bat"></div>
+        <div class="content">
+          <div class="title">ক্রিকেট ব্যাট</div>
+          <div class="price">৳ 3,800</div>
+          <a href="#order" class="btn" onclick="setProduct('ক্রিকেট ব্যাট')">অর্ডার করুন</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb"><img src="/image/টেনিস র‍্যাকেট.jpg" alt="Tennis Racket"></div>
+        <div class="content">
+          <div class="title">টেনিস র‍্যাকেট</div>
+          <div class="price">৳ 2,700</div>
+          <a href="#order" class="btn" onclick="setProduct('টেনিস র‍্যাকেট')">অর্ডার করুন</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="container">
+    
+    <div class="grid">
+      
+      <div class="card">
+        <div class="thumb"><img src="/image/ball.jpg" alt="Football"></div>
+        <div class="content">
+          <div class="title">ফুটবল</div>
+          <div class="price">৳ 1,500</div>
+          <a href="#order" class="btn" onclick="setProduct('ফুটবল')">অর্ডার করুন</a>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="thumb"><img src="/image/ব্যাডমিন্টন সেট.jpg" alt="Badminton Set"></div>
+        <div class="content">
+          <div class="title">ব্যাডমিন্টন সেট</div>
+          <div class="price">৳ 2,300</div>
+          <a href="#order" class="btn" onclick="setProduct('ব্যাডমিন্টন সেট')">অর্ডার করুন</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb"><img src="/image/ক্রিকেট ব্যাট.jpg" alt="Cricket Bat"></div>
+        <div class="content">
+          <div class="title">ক্রিকেট ব্যাট</div>
+          <div class="price">৳ 3,800</div>
+          <a href="#order" class="btn" onclick="setProduct('ক্রিকেট ব্যাট')">অর্ডার করুন</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb"><img src="/image/টেনিস র‍্যাকেট.jpg" alt="Tennis Racket"></div>
+        <div class="content">
+          <div class="title">টেনিস র‍্যাকেট</div>
+          <div class="price">৳ 2,700</div>
+          <a href="#order" class="btn" onclick="setProduct('টেনিস র‍্যাকেট')">অর্ডার করুন</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="order">
+    <div class="modal">
+      <a href="#" class="close">✖</a>
+      <h2>পণ্য অর্ডার করুন</h2>
+      <form action="sports-confirm.html" method="post">
+        <label>পণ্যের নাম</label>
+        <input type="text" id="productName" name="product" readonly>
+
+        <label>পরিমাণ</label>
+        <input type="number" name="qty" placeholder="যেমন: 1" required>
+
+        <label>ফোন নাম্বার</label>
+        <input type="text" name="phone" required>
+
+        <label>ঠিকানা</label>
+        <textarea name="address" required></textarea>
+
+        <button type="submit">অর্ডার কনফার্ম</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function setProduct(name) {
+      document.getElementById("productName").value = name;
+    }
+  </script>
+
+</body>
+</html>

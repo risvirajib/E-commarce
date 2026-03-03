@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up Successful - Risvi World</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f0f1a, #141428);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+
+    .success-box {
+      background: rgba(20, 20, 40, 0.95);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+      width: 380px;
+      text-align: center;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    .success-box h2 {
+      font-size: 26px;
+      margin-bottom: 10px;
+      color: #f1f1f1;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+
+    .success-box p {
+      margin: 15px 0 25px;
+      font-size: 16px;
+      color: #ccc;
+    }
+
+    .success-box button {
+      width: 100%;
+      padding: 12px;
+      background: #f1f4f2;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #0f0f1a;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(200, 200, 200, 0.4);
+    }
+
+    .success-box button:hover {
+      background: #00cc66;
+      color: #fff;
+      box-shadow: 0 0 25px #00ff88, 0 0 40px #00ff88;
+      transform: translateY(-2px);
+    }
+
+    .success-box button:active {
+      transform: scale(0.98);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 420px) {
+      .success-box {
+        width: 90%;
+        padding: 30px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="success-box">
+    <h2>✅ Sign Up Successful!</h2>
+    <p>অভিনন্দন 🎉 আপনার অ্যাকাউন্ট তৈরি হয়ে গেছে।</p>
+
+    <!-- Clean Button (No anchor inside) -->
+    <button onclick="window.location.href='login.html'">
+      Go to Login
+    </button>
+
+  </div>
+
+</body>
+</html>
